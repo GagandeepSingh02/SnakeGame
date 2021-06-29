@@ -9,7 +9,6 @@ let canvas = document.querySelector("canvas");
     img.addEventListener("load", function(){
         ctx.drawImage(img, 300, 0, 1536, 721);
     });
-
 let eatingSound = new Audio("./Music/eat.mp3");
 let gameOverSound = new Audio("./Music/gameOver.mp3");
 let movementSound = new Audio("./Music/leftright.mp3");
@@ -36,31 +35,6 @@ inc.addEventListener("click",function(e){
 dec.addEventListener("click",function(e){
     snakeSpeed -=2;
 });
-
-function main(currtime) {
-    window.requestAnimationFrame(main);
-    if ((currtime - lastLoad) / 1000 < 1 / snakeSpeed) {
-        return;
-    }
-    lastLoad = currtime;
-    snakeGame();
-    //console.log(currtime);
-}
-
-let board = document.querySelector(".board");
-
-
-function isCollasped(snakeArr) {
-    for (let i = 1; i < snakeArr.length; i++) {
-        if (snakeArr[i].x == snakeArr[0].x && snakeArr[i].y == snakeArr[0].y) {
-            return true;
-        }
-    }
-    if ((snakeArr[0].x <= 0 || snakeArr[0].x >= 20) || (snakeArr[0].y <= 0 || snakeArr[0].y >= 20)) {
-        return true;
-    }
-
-}
 
 function snakeGame() {
     if (isCollasped(snakeArr)) {
@@ -121,7 +95,6 @@ function snakeGame() {
     board.appendChild(food);
 }
 
-
 let hiScore = localStorage.getItem("hiScore");
 if (hiScore == null) {
     localStorage.setItem("hiScore", JSON.stringify(myHighScore));
@@ -129,7 +102,35 @@ if (hiScore == null) {
     myHighScore = JSON.parse(hiScore);
     highScoreContainer.innerHTML = "HighScore:" + myHighScore;
 }
-window.requestAnimationFrame(main);
+
+
+function main(currtime) {
+    window.requestAnimationFrame(main);
+    if ((currtime - lastLoad) / 1000 < 1 / snakeSpeed) {
+        return;
+    }
+    lastLoad = currtime;
+    snakeGame();
+    //console.log(currtime);
+}
+
+let board = document.querySelector(".board");
+
+
+function isCollasped(snakeArr) {
+    for (let i = 1; i < snakeArr.length; i++) {
+        if (snakeArr[i].x == snakeArr[0].x && snakeArr[i].y == snakeArr[0].y) {
+            return true;
+        }
+    }
+    if ((snakeArr[0].x <= 0 || snakeArr[0].x >= 20) || (snakeArr[0].y <= 0 || snakeArr[0].y >= 20)) {
+        return true;
+    }
+
+}
+
+
+
 window.addEventListener('keydown', e => {
     console.log(e.key);
     direction = { x: 0, y: 1 };
@@ -157,3 +158,4 @@ window.addEventListener('keydown', e => {
     }
 
 });
+window.requestAnimationFrame(main);
